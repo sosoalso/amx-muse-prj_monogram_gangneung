@@ -1,0 +1,7 @@
+/lib
+/.site-packages
+/mojo
+/lib
+/.venv
+.local
+program.json
