@@ -5,6 +5,7 @@ from lib.networkmanager import TcpClient
 
 # ---------------------------------------------------------------------------- #
 VIDMTX = TcpClient(name="vidmtx", ip="192.168.0.41", port=9990, buffer_size=2048)
+# VIDMTX = get_device("vidmtx")
 # ---------------------------------------------------------------------------- #
 VIDSWT = PyATEMMax.ATEMMax()
 IP_VIDSWT = "192.168.0.42"
@@ -12,9 +13,13 @@ IP_VIDSWT = "192.168.0.42"
 VIDPRJ_01 = TcpClient(name="vidprj_01", ip="192.168.0.51", port=4352)
 VIDPRJ_02 = TcpClient(name="vidprj_02", ip="192.168.0.52", port=4352)
 VIDPRJ_03 = TcpClient(name="vidprj_03", ip="192.168.0.53", port=4352)
+# VIDPRJ_01 = get_device("vidprj_01")
+# VIDPRJ_02 = get_device("vidprj_02")
+# VIDPRJ_03 = get_device("vidprj_03")
 VIDPRJ = (VIDPRJ_01, VIDPRJ_02, VIDPRJ_03)
 # ---------------------------------------------------------------------------- #
 VIDREC = TcpClient(name="vidrec", ip="192.168.0.43", port=9993)
+# VIDREC = get_device("vidrec")
 # ---------------------------------------------------------------------------- #
 NUM_CAM = 4
 CAM_IP = (
@@ -138,4 +143,13 @@ TP_10001 = get_device("AMX-10001")
 TP_10002 = get_device("AMX-10002")
 TP_10003 = get_device("AMX-10003")
 TP_LIST = (TP_10001, TP_10002, TP_10003)
+
+
 # ---------------------------------------------------------------------------- #
+def init_tcp_client_connect():
+    VIDMTX.connect()
+    VIDPRJ_01.connect()
+    VIDPRJ_02.connect()
+    VIDPRJ_03.connect()
+    VIDREC.connect()
+    VIDSWT.connect(IP_VIDSWT)

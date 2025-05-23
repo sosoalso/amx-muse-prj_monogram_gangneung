@@ -110,12 +110,10 @@ def refresh_cam_preset_button(idx_tp):
 
 
 def refresh_cam_speed_button():
-    context.log.info("refresh_cam_speed_button")
-    for idx_tp, _ in enumerate(TP_LIST):
-        if 1 <= var.sel_cam[idx_tp] <= NUM_CAM:
-            tp_set_button(TP_LIST[idx_tp], TP_PORT_CAM, 107, cam_instance_list[var.sel_cam[idx_tp] - 1].is_fast)
-        else:
-            tp_set_button(TP_LIST[idx_tp], TP_PORT_CAM, 107, False)
+    if 1 <= var.sel_cam[idx_tp] <= NUM_CAM:
+        tp_set_button(TP_LIST[idx_tp], TP_PORT_CAM, 107, cam_instance_list[var.sel_cam[idx_tp] - 1].is_fast)
+    else:
+        tp_set_button(TP_LIST[idx_tp], TP_PORT_CAM, 107, False)
 
 
 def refresh_cam_all_button(*args):
@@ -133,7 +131,7 @@ def show_cam_popup(idx_tp, idx_cam, idx_preset):
 
 
 # ---------------------------------------------------------------------------- #
-def add_event_cam():
+def add_tp_cam():
     def select_cam(idx_tp, idx_cam):  # 기본 매개변수로 idx_cam 캡처
         var.sel_cam[idx_tp] = idx_cam + 1
         refresh_cam_select_button(idx_tp)
@@ -151,7 +149,6 @@ def add_event_cam():
             show_cam_popup(idx_tp, var.sel_cam[idx_tp], idx_preset)
 
     def move_up(idx_tp):
-        context.log.info("move_up")
         if 1 <= var.sel_cam[idx_tp] <= NUM_CAM:
             cam_instance_list[var.sel_cam[idx_tp] - 1].move_up()
 
@@ -184,7 +181,6 @@ def add_event_cam():
             cam_instance_list[var.sel_cam[idx_tp] - 1].zoom_stop()
 
     def toggle_speed(idx_tp):
-        context.log.info("toggle_speed")
         if 1 <= var.sel_cam[idx_tp] <= NUM_CAM:
             cam_instance_list[var.sel_cam[idx_tp] - 1].toggle_speed()
         refresh_cam_speed_button()
@@ -236,9 +232,11 @@ def add_event_cam():
         tp_add_watcher(dv_tp, TP_PORT_CAM, 105, zoom_in_button.handle_event)
         tp_add_watcher(dv_tp, TP_PORT_CAM, 106, zoom_out_button.handle_event)
         tp_add_watcher(dv_tp, TP_PORT_CAM, 107, toggle_speed_button.handle_event)
-    # ---------------------------------------------------------------------------- #
+    context.log.info("add_tp_cam 등록 완료")
+
+
+def add_evt_cam():
     for idx, tp in enumerate(TP_LIST):
         tp.online(lambda evt, idx=idx: refresh_cam_select_button(idx))
         tp.online(lambda evt, idx=idx: refresh_cam_preset_button(idx))
-    # ---------------------------------------------------------------------------- #
-    context.log.info("tp_cam 등록 완료")
+    context.log.info("add_evt_cam 등록 완료")

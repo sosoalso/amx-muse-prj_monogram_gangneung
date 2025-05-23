@@ -24,28 +24,22 @@ class Vidmtx(EventManager):
 
     def init(self):
         self.dv.receive.listen(self.parse_response)
-        self.dv.connect()
 
     def parse_response(self, *args):
         try:
             data_text = args[0].arguments["data"].decode("utf-8")
-            context.log.info(f"parse_response() {data_text=}")
+            context.log.debug(data_text)
             parsed_data_text_chunks = data_text.split("\n\n")
             for parsed_data_text in parsed_data_text_chunks:
-                context.log.info(f"{parsed_data_text=}")
                 splitted_message = parsed_data_text.split("\n")
-                context.log.info(f"{splitted_message=}")
                 if "VIDEO OUTPUT ROUTING:" in splitted_message[0]:
                     for msg in splitted_message[1:]:
-                        context.log.info(f"{msg=}")
                         match = re.search(r"\d+ \d+", msg)
                         if match:
                             line = match.group(0)
-                            context.log.info(f"{line=}")
                             try:
                                 idx_out, idx_in = map(int, line.split())
                                 self.routes[idx_out + 1] = idx_in + 1
-                                print(f"{self.routes=}")
                                 self.trigger_event("route", idx_in=idx_in, idx_out=idx_out, this=self)
                             except ValueError as e:
                                 context.log.error(f"{e}")
@@ -54,7 +48,6 @@ class Vidmtx(EventManager):
             return
 
     def set_route(self, idx_in, idx_out):
-        context.log.info(f"set_route() VIDEO OUTPUT ROUTING:\n{idx_out} {idx_in}\n\n")
         self.dv.send(f"VIDEO OUTPUT ROUTING:\n{idx_out} {idx_in}\n\n")
         self.routes[idx_out + 1] = idx_in + 1
         self.trigger_event("route", idx_in=idx_in, idx_out=idx_out, routes=self.routes, this=self)
@@ -126,7 +119,6 @@ class var:
 
 # ---------------------------------------------------------------------------- #
 def refresh_input_button(idx_tp):
-    context.log.info("refresh_input_button")
     for idx_in in range(1, NUM_VIDMTX_IN + 1):
         tp_set_button(TP_LIST[idx_tp], TP_PORT_VIDMTX, idx_in + 100, var.sel_in[idx_tp] == idx_in)
         tp_set_button(
@@ -138,7 +130,6 @@ def refresh_input_button(idx_tp):
 
 
 def refresh_output_button(idx_tp):
-    context.log.info("refresh_output_button")
     for idx_out in range(1, NUM_VIDMTX_OUT + 1):
         tp_set_button(
             TP_LIST[idx_tp],
@@ -149,13 +140,11 @@ def refresh_output_button(idx_tp):
 
 
 def refresh_input_button_name(idx_tp):
-    context.log.info("refresh_input_button_name")
     for idx_in in range(1, NUM_VIDMTX_IN + 1):
         tp_set_button_text_unicode(TP_LIST[idx_tp], TP_PORT_VIDMTX, idx_in + 100, NAME_VIDMTX_IN[idx_in - 1])
 
 
 def refresh_output_button_name(idx_tp):
-    context.log.info("refresh_output_button_name")
     for idx_out in range(1, NUM_VIDMTX_OUT + 1):
         tp_set_button_text_unicode(TP_LIST[idx_tp], TP_PORT_VIDMTX, idx_out + 200, NAME_VIDMTX_OUT[idx_out - 1])
 
@@ -166,7 +155,6 @@ def refresh_output_route_name_all():
 
 
 def refresh_output_route_name(idx_out):
-    context.log.info(f"refresh_output_route_name {idx_out=}")
     if 0 < idx_out <= NUM_VIDMTX_OUT:
         if 0 < vidmtx_instance.routes[idx_out] <= NUM_VIDMTX_IN:
             tp_set_button_text_unicode_ss(
@@ -177,7 +165,7 @@ def refresh_output_route_name(idx_out):
 
 
 # ---------------------------------------------------------------------------- #
-def add_event_vidmtx():
+def add_tp_vidmtx():
     for idx_tp, dv_tp in enumerate(TP_LIST):
         # INFO : 입력 선택 버튼 | ch 101-120
         for idx_in in range(1, 20 + 1):
@@ -201,8 +189,10 @@ def add_event_vidmtx():
             output_route_button = ButtonHandler()
             output_route_button.add_event_handler("push", set_route)
             tp_add_watcher(dv_tp, TP_PORT_VIDMTX, idx_out + 200, output_route_button.handle_event)
+    context.log.info("add_tp_vidmtx 등록 완료")
 
-    # ---------------------------------------------------------------------------- #
+
+def add_evt_vidmtx():
     # INFO : 매트릭스 이벤트 피드백
     def refresh_button_on_route_event(**kwargs):
         for idx_evt, _ in enumerate(TP_LIST):
@@ -218,8 +208,7 @@ def add_event_vidmtx():
         tp_online.online(lambda evt, idx=tp_idx: refresh_input_button_name(idx))
         tp_online.online(lambda evt, idx=tp_idx: refresh_output_button_name(idx))
         tp_online.online(lambda evt: refresh_output_route_name_all())
-
-    context.log.info("add_event_vidmtx 등록 완료")
+    context.log.info("add_evt_vidmtx 등록 완료")
 
 
 # ---------------------------------------------------------------------------- #

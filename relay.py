@@ -42,21 +42,10 @@ TP_PORT_RELAY = 5
 
 
 # ---------------------------------------------------------------------------- #
-def add_event_relay():
+def add_tp_relay():
     for tp_instance in TP_LIST:
         for index in range(1, len(REL) + 1):
             button = ButtonHandler()
             button.add_event_handler("push", lambda idx=index - 1: pulse_relay(idx))
             tp_add_watcher(tp_instance, TP_PORT_RELAY, index + 200, button.handle_event)
-    context.log.info("tp_relay 등록 완료")
-
-
-# NOTE : 테스트
-# def handle_relay_state(*args):
-#     context.log.info(f"{args[0].path} {args[0].value}")
-
-
-# for rel in REL:
-#     if rel:
-#         rel.state.watch(handle_relay_state)
-# # ---------------------------------------------------------------------------- #
+    context.log.info("add_tp_relay 등록 완료")

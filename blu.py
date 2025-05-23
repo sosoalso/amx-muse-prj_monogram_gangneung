@@ -16,7 +16,7 @@ BLU_PATH_GAIN = [
     ("AMX INPUT GAIN", f"Channel {5}", "Gain"),
     ("AMX INPUT GAIN", f"Channel {7}", "Gain"),
     ("AMX MAIN SPEAKER GAIN", f"Channel {1}", "Gain"),
-    ("AMX OUTDOOR GAIN", f"Channel {1}", "Gain"),
+    ("AMX OUTDOOR GAIN", "Gain"),
 ]
 BLU_PATH_MUTE = [
     ("AMX INPUT GAIN", f"Channel {1}", "Mute"),
@@ -24,7 +24,7 @@ BLU_PATH_MUTE = [
     ("AMX INPUT GAIN", f"Channel {5}", "Mute"),
     ("AMX INPUT GAIN", f"Channel {7}", "Mute"),
     ("AMX MAIN SPEAKER GAIN", f"Channel {1}", "Mute"),
-    ("AMX OUTDOOR GAIN", f"Channel {1}", "Mute"),
+    ("AMX OUTDOOR GAIN", "Mute"),
 ]
 # ---------------------------------------------------------------------------- #
 # SECTION : 제어 장비
@@ -65,7 +65,7 @@ def refresh_tp_by_path(path):
 blu_controller.states.subscribe(refresh_tp_by_path)
 
 
-def add_event_blu():
+def add_tp_blu():
     # ---------------------------------------------------------------------------- #
     for idx, path in enumerate(BLU_PATH_GAIN):
         vol_up_button = ButtonHandler(repeat_interval=0.3)
@@ -81,8 +81,10 @@ def add_event_blu():
         mute_toggle_button = ButtonHandler()
         mute_toggle_button.add_event_handler("push", lambda path=path: blu_controller.toggle_muted_unmuted(path))
         tp_add_watcher_ss(TP_LIST, TP_PORT_BLU, 101 + idx, mute_toggle_button.handle_event)
+    context.log.info("add_tp_blu 등록 완료")
 
-    # ---------------------------------------------------------------------------- #
+
+def add_evt_blu():
     def refresh_all():
         for path in BLU_PATH_GAIN + BLU_PATH_MUTE:
             refresh_tp_by_path(path)
@@ -91,5 +93,4 @@ def add_event_blu():
     for idx, tp in enumerate(TP_LIST):
         tp.online(lambda evt: refresh_all())
         tp.online(lambda evt: refresh_all())
-    # ---------------------------------------------------------------------------- #
-    context.log.info("tp_blu 등록 완료")
+    context.log.info("add_evt_blu 등록 완료")

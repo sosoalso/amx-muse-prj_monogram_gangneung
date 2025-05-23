@@ -1,14 +1,15 @@
-from blu import add_event_blu
-from cam import add_event_cam
-from config import TP_LIST
+from blu import add_evt_blu, add_tp_blu
+from cam import add_evt_cam, add_tp_cam
+from config import TP_LIST, init_tcp_client_connect
 from lib.uimenu import UIMenu
 from mojo import context
-from relay import add_event_relay
-from vidmtx import add_event_vidmtx
-from vidprj import add_event_vidprj
-from vidrec import add_event_vidrec
-from vidswt import add_event_vidswt
+from relay import add_tp_relay
+from vidmtx import add_evt_vidmtx, add_tp_vidmtx
+from vidprj import add_evt_vidprj, add_tp_vidprj
+from vidrec import add_evt_vidrec, add_tp_vidrec
+from vidswt import add_evt_vidswt, add_tp_vidswt
 
+# from vidswt import add_evt_vidswt, add_tp_vidswt
 # def add_system_power_on_off_button(*args):
 #     def power_on_event(wait_time):
 #         tp_set_button_text_unicode_ss(TP_LIST, 1, 1, "시스템 전원을 켜는 중입니다...")
@@ -41,7 +42,7 @@ from vidswt import add_event_vidswt
 # ---------------------------------------------------------------------------- #
 # INFO : 각종 설정
 # ---------------------------------------------------------------------------- #
-context.log.level = "INFO"
+context.log.level = "ERROR"
 # ---------------------------------------------------------------------------- #
 # INFO : UI 메뉴
 # ---------------------------------------------------------------------------- #
@@ -49,13 +50,22 @@ UI_MENU = tuple(UIMenu(tp) for tp in TP_LIST)
 # ---------------------------------------------------------------------------- #
 # INFO : 장비 별 이벤트 핸들러 등록
 # ---------------------------------------------------------------------------- #
-add_event_blu()
-add_event_cam()
-add_event_relay()
-add_event_vidmtx()
-add_event_vidprj()
-add_event_vidrec()
-add_event_vidswt()
+add_tp_blu()
+add_tp_cam()
+add_tp_relay()
+add_tp_vidmtx()
+add_tp_vidprj()
+add_tp_vidrec()
+add_tp_vidswt()
+# ---------------------------------------------------------------------------- #
+add_evt_blu()
+add_evt_cam()
+add_evt_vidmtx()
+add_evt_vidprj()
+add_evt_vidrec()
+add_evt_vidswt()
+# ---------------------------------------------------------------------------- #
+init_tcp_client_connect()
 # ---------------------------------------------------------------------------- #
 context.run(globals())
 # ---------------------------------------------------------------------------- #

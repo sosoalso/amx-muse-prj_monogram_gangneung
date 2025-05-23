@@ -1,4 +1,4 @@
-from config import IP_VIDSWT, TP_LIST, VIDSWT
+from config import TP_LIST, VIDSWT
 from lib.buttonhandler import ButtonHandler
 from lib.eventmanager import EventManager
 from lib.lib_tp import tp_add_watcher_ss, tp_set_button_ss
@@ -14,10 +14,6 @@ class Vidswt(EventManager):
         self.dv = dv
         self.pvw_in = 0
         self.pgm_in = 0
-        self.init()
-
-    def init(self):
-        self.dv.connect(IP_VIDSWT)
 
     def switch_pvw(self, ch_in):
         self.dv.setPreviewInputVideoSource(0, ch_in)
@@ -45,18 +41,16 @@ TP_PORT_VIDSWT = 9
 
 # ---------------------------------------------------------------------------- #
 def refresh_pvw_switch_button():
-    context.log.info("refresh_pvw_switch_button")
     for idx in range(1, 10 + 1):
         tp_set_button_ss(TP_LIST, TP_PORT_VIDSWT, idx + 100, vidswt_instance.pvw_in == idx - 1)
 
 
 def refresh_pgm_switch_button():
-    context.log.info("refresh_pgm_switch_button")
     for idx in range(1, 10 + 1):
         tp_set_button_ss(TP_LIST, TP_PORT_VIDSWT, idx + 200, vidswt_instance.pgm_in == idx - 1)
 
 
-def add_event_vidswt():
+def add_tp_vidswt():
     # ---------------------------------------------------------------------------- #
     for idx in range(1, 10 + 1):
         pvw_switch_button = ButtonHandler()
@@ -66,8 +60,12 @@ def add_event_vidswt():
         pgm_switch_button.add_event_handler("push", lambda idx=idx: vidswt_instance.switch_pgm(idx))
         tp_add_watcher_ss(TP_LIST, TP_PORT_VIDSWT, idx + 200, pgm_switch_button.handle_event)
     # ---------------------------------------------------------------------------- #
+    context.log.info("add_tp_vidswt 등록 완료")
+
+
+def add_evt_vidswt():
     # INFO : 비디오 스위처 이벤트 피드백
     vidswt_instance.add_event_handler("switch_pvw", lambda **kwargs: refresh_pvw_switch_button())
     vidswt_instance.add_event_handler("switch_pgm", lambda **kwargs: refresh_pgm_switch_button())
     # ---------------------------------------------------------------------------- #
-    context.log.info("add_event_vidswt 등록 완료")
+    context.log.info("add_evt_vidswt 등록 완료")
