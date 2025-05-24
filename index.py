@@ -6,6 +6,7 @@ from mojo import context
 from relay import add_tp_relay
 from vidmtx import add_evt_vidmtx, add_tp_vidmtx
 from vidprj import add_evt_vidprj, add_tp_vidprj
+from vidrec import add_evt_vidrec, add_tp_vidrec
 
 # ---------------------------------------------------------------------------- #
 context.log.level = "ERROR"
@@ -19,12 +20,14 @@ add_tp_cam()
 add_tp_relay()
 add_tp_vidmtx()
 add_tp_vidprj()
+add_tp_vidrec()
 # ---------------------------------------------------------------------------- #
 # INFO : 장비 별 이벤트 핸들러 등록
 add_evt_blu()
 add_evt_cam()
 add_evt_vidmtx()
 add_evt_vidprj()
+add_evt_vidrec()
 # ---------------------------------------------------------------------------- #
 # INFO : 소켓 연결 초기화
 init_tcp_client_connect()
