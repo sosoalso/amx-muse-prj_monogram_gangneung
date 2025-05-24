@@ -60,8 +60,6 @@ class EpsonVidprj(EventManager):
                 context.log.error(f"EpsonVidprj {self.name=} Error decoding data: {e}")
 
     def set_power(self, value):
-        # FIXME
-        context.log.info(f"set_power {value}")
         self.dv.send("%1POWR 1\r" if value else "%1POWR 0\r")
         self.power = value
         self.trigger_event("power", value=value, this=self)

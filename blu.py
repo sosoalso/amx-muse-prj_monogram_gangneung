@@ -11,20 +11,14 @@ from mojo import context
 
 # ---------------------------------------------------------------------------- #
 BLU_PATH_GAIN = [
-    ("AMX INPUT GAIN", f"Channel {1}", "Gain"),
-    ("AMX INPUT GAIN", f"Channel {3}", "Gain"),
-    ("AMX INPUT GAIN", f"Channel {5}", "Gain"),
-    ("AMX INPUT GAIN", f"Channel {7}", "Gain"),
     ("AMX MAIN SPEAKER GAIN", f"Channel {1}", "Gain"),
+    ("AMX CEILLING GAIN", "Gain"),
     ("AMX OUTDOOR GAIN", "Gain"),
 ]
 BLU_PATH_MUTE = [
-    ("AMX INPUT GAIN", f"Channel {1}", "Mute"),
-    ("AMX INPUT GAIN", f"Channel {3}", "Mute"),
-    ("AMX INPUT GAIN", f"Channel {5}", "Mute"),
-    ("AMX INPUT GAIN", f"Channel {7}", "Mute"),
     ("AMX MAIN SPEAKER GAIN", f"Channel {1}", "Mute"),
     ("AMX OUTDOOR GAIN", "Mute"),
+    ("AMX CEILLING GAIN", "Mute"),
 ]
 # ---------------------------------------------------------------------------- #
 # SECTION : 제어 장비
@@ -90,7 +84,7 @@ def add_evt_blu():
             refresh_tp_by_path(path)
 
     BLU.online(lambda evt: refresh_all())
-    for idx, tp in enumerate(TP_LIST):
-        tp.online(lambda evt: refresh_all())
-        tp.online(lambda evt: refresh_all())
+    for _, dv_tp in enumerate(TP_LIST):
+        dv_tp.online(lambda evt: refresh_all())
+        dv_tp.online(lambda evt: refresh_all())
     context.log.info("add_evt_blu 등록 완료")

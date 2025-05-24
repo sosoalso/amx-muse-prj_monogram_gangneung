@@ -1,5 +1,3 @@
-import PyATEMMax
-
 from lib.lib_yeoul import get_device
 from lib.networkmanager import TcpClient
 
@@ -7,8 +5,6 @@ from lib.networkmanager import TcpClient
 VIDMTX = TcpClient(name="vidmtx", ip="192.168.0.41", port=9990, buffer_size=2048)
 # VIDMTX = get_device("vidmtx")
 # ---------------------------------------------------------------------------- #
-VIDSWT = PyATEMMax.ATEMMax()
-IP_VIDSWT = "192.168.0.42"
 # ---------------------------------------------------------------------------- #
 VIDPRJ_01 = TcpClient(name="vidprj_01", ip="192.168.0.51", port=4352)
 VIDPRJ_02 = TcpClient(name="vidprj_02", ip="192.168.0.52", port=4352)
@@ -152,4 +148,4 @@ def init_tcp_client_connect():
     VIDPRJ_02.connect()
     VIDPRJ_03.connect()
     VIDREC.connect()
-    VIDSWT.connect(IP_VIDSWT)
+    # VIDSWT.connect(IP_VIDSWT)

@@ -202,12 +202,12 @@ def add_evt_vidmtx():
     vidmtx_instance.add_event_handler("route", refresh_button_on_route_event)
     # ---------------------------------------------------------------------------- #
     # INFO : TP 온라인 피드백
-    for tp_idx, tp_online in enumerate(TP_LIST):
-        tp_online.online(lambda evt, idx=tp_idx: refresh_input_button(idx))
-        tp_online.online(lambda evt, idx=tp_idx: refresh_output_button(idx))
-        tp_online.online(lambda evt, idx=tp_idx: refresh_input_button_name(idx))
-        tp_online.online(lambda evt, idx=tp_idx: refresh_output_button_name(idx))
-        tp_online.online(lambda evt: refresh_output_route_name_all())
+    for idx_tp, dv_tp in enumerate(TP_LIST):
+        dv_tp.online(lambda evt, idx_tp=idx_tp: refresh_input_button(idx_tp))
+        dv_tp.online(lambda evt, idx_tp=idx_tp: refresh_output_button(idx_tp))
+        dv_tp.online(lambda evt, idx_tp=idx_tp: refresh_input_button_name(idx_tp))
+        dv_tp.online(lambda evt, idx_tp=idx_tp: refresh_output_button_name(idx_tp))
+        dv_tp.online(lambda evt: refresh_output_route_name_all())
     context.log.info("add_evt_vidmtx 등록 완료")
 
 

@@ -6,8 +6,6 @@ from mojo import context
 from relay import add_tp_relay
 from vidmtx import add_evt_vidmtx, add_tp_vidmtx
 from vidprj import add_evt_vidprj, add_tp_vidprj
-from vidrec import add_evt_vidrec, add_tp_vidrec
-from vidswt import add_evt_vidswt, add_tp_vidswt
 
 # from vidswt import add_evt_vidswt, add_tp_vidswt
 # def add_system_power_on_off_button(*args):
@@ -42,7 +40,7 @@ from vidswt import add_evt_vidswt, add_tp_vidswt
 # ---------------------------------------------------------------------------- #
 # INFO : 각종 설정
 # ---------------------------------------------------------------------------- #
-context.log.level = "ERROR"
+context.log.level = "INFO"
 # ---------------------------------------------------------------------------- #
 # INFO : UI 메뉴
 # ---------------------------------------------------------------------------- #
@@ -55,15 +53,11 @@ add_tp_cam()
 add_tp_relay()
 add_tp_vidmtx()
 add_tp_vidprj()
-add_tp_vidrec()
-add_tp_vidswt()
 # ---------------------------------------------------------------------------- #
 add_evt_blu()
 add_evt_cam()
 add_evt_vidmtx()
 add_evt_vidprj()
-add_evt_vidrec()
-add_evt_vidswt()
 # ---------------------------------------------------------------------------- #
 init_tcp_client_connect()
 # ---------------------------------------------------------------------------- #
