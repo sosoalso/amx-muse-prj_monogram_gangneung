@@ -23,7 +23,7 @@ BLU_PATH_MUTE = [
 # ---------------------------------------------------------------------------- #
 # SECTION : 제어 장비
 # ---------------------------------------------------------------------------- #
-blu_controller = BluController(BLU)
+blu_controller = BluController(BLU)  # INFO : 제어 장비 인스턴스
 
 
 def handle_blu_controller_online():
@@ -37,9 +37,7 @@ BLU.online(lambda evt: handle_blu_controller_online())
 TP_PORT_BLU = 2
 
 
-# ---------------------------------------------------------------------------- #
 def refresh_tp_by_path(path):
-    # ---------------------------------------------------------------------------- #
     if path in BLU_PATH_GAIN:
         idx = BLU_PATH_GAIN.index(path)
         lvl_index = 101 + idx
@@ -47,7 +45,6 @@ def refresh_tp_by_path(path):
         if val is not None:
             tp_send_level_ss(TP_LIST, 2, lvl_index, int(round(blu_controller.db_to_tp(float(val)), 0)))
             tp_set_button_text_ss(TP_LIST, 2, lvl_index, f"{round(val, 1)} db")
-    # ---------------------------------------------------------------------------- #
     elif path in BLU_PATH_MUTE:
         idx = BLU_PATH_MUTE.index(path)
         ch_index = 101 + idx

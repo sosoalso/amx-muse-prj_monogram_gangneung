@@ -59,7 +59,7 @@ class Vidmtx(EventManager):
             self.trigger_event("route", idx_in=idx_in, idx_out=idx_out, routes=self.routes, this=self)
 
 
-vidmtx_instance = Vidmtx(VIDMTX)
+vidmtx_instance = Vidmtx(VIDMTX)  # INFO : 제어 장비 인스턴스
 # ---------------------------------------------------------------------------- #
 # SECTION : TP
 # ---------------------------------------------------------------------------- #
@@ -112,12 +112,10 @@ NAME_VIDMTX_OUT = (
 )
 
 
-# ---------------------------------------------------------------------------- #
 class var:
     sel_in = [0] * len(TP_LIST)
 
 
-# ---------------------------------------------------------------------------- #
 def refresh_input_button(idx_tp):
     for idx_in in range(1, NUM_VIDMTX_IN + 1):
         tp_set_button(TP_LIST[idx_tp], TP_PORT_VIDMTX, idx_in + 100, var.sel_in[idx_tp] == idx_in)
@@ -164,10 +162,9 @@ def refresh_output_route_name(idx_out):
             tp_set_button_text_unicode_ss(TP_LIST, TP_PORT_VIDMTX, idx_out + 300, "")
 
 
-# ---------------------------------------------------------------------------- #
 def add_tp_vidmtx():
     for idx_tp, dv_tp in enumerate(TP_LIST):
-        # INFO : 입력 선택 버튼 | ch 101-120
+        # NOTE : 입력 선택 버튼 | ch 101-120
         for idx_in in range(1, 20 + 1):
 
             def set_selected_input(idx_tp=idx_tp, idx_in=idx_in):
@@ -178,7 +175,7 @@ def add_tp_vidmtx():
             input_select_button = ButtonHandler()
             input_select_button.add_event_handler("push", set_selected_input)
             tp_add_watcher(dv_tp, TP_PORT_VIDMTX, idx_in + 100, input_select_button.handle_event)
-        # INFO : 출력 버튼 - 라우팅 | ch 201-220
+        # NOTE : 출력 버튼 - 라우팅 | ch 201-220
         for idx_out in range(1, 20 + 1):
 
             def set_route(idx_tp=idx_tp, idx_out=idx_out):
@@ -193,15 +190,14 @@ def add_tp_vidmtx():
 
 
 def add_evt_vidmtx():
-    # INFO : 매트릭스 이벤트 피드백
-    def refresh_button_on_route_event(**kwargs):
+    # NOTE : 매트릭스 이벤트 피드백
+    def refresh_button_on_route_event(**kwargss):
         for idx_evt, _ in enumerate(TP_LIST):
             refresh_output_button(idx_evt)
             refresh_output_route_name(kwargs["idx_out"] + 1)
 
     vidmtx_instance.add_event_handler("route", refresh_button_on_route_event)
-    # ---------------------------------------------------------------------------- #
-    # INFO : TP 온라인 피드백
+    # NOTE : TP 온라인 피드백
     for idx_tp, dv_tp in enumerate(TP_LIST):
         dv_tp.online(lambda evt, idx_tp=idx_tp: refresh_input_button(idx_tp))
         dv_tp.online(lambda evt, idx_tp=idx_tp: refresh_output_button(idx_tp))

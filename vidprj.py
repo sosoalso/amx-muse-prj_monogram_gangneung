@@ -13,15 +13,16 @@ class EpsonVidprj(EventManager):
     def __init__(self, dv, name="EpsonVidprj"):
         super().__init__("power", "poweron", "poweroff", "mute", "muted", "unmuted", "poll")
         self.dv = dv
-        self.poll = Scheduler(max_workers=3, name="EpsonVidprjPoll")
+        self.name = name
         self.power = False
         self.mute = False
         self.source = "0"
-        self.name = name
+        self.poll = None
         self.init()
 
     def init(self):
         self.dv.receive.listen(self.parse_response)
+        self.poll = Scheduler(max_workers=3, name=self.name + " poll")
         self.dv.connect()
         self.start_poll()
 
@@ -82,7 +83,7 @@ class EpsonVidprj(EventManager):
         self.set_mute(False)
 
 
-vidprj_instance_list = tuple(EpsonVidprj(dv, name=f"vidprj_0{idx}") for idx, dv in enumerate(VIDPRJ))
+vidprj_instance_list = tuple(EpsonVidprj(d, name=f"vidprj_0{i}") for i, d in enumerate(VIDPRJ))
 # ---------------------------------------------------------------------------- #
 # SECTION : TP
 # ---------------------------------------------------------------------------- #
@@ -100,8 +101,7 @@ def refresh_vidprj_mute_button(idx):
 
 
 def add_tp_vidprj():
-    # ---------------------------------------------------------------------------- #
-    # INFO : 전원 On/Off | ch 11-13 21-23 : 뮤트 On/Off | ch 31-33 41-43
+    # NOTE : 전원 on/off | ch 11 - 13, 21 - 23 : 뮤트 unmute/mute | ch 31 - 33, 41-43
     for idx_vidprj, vidprj_instance in enumerate(vidprj_instance_list):
         power_on_button = ButtonHandler()
         power_off_button = ButtonHandler()
@@ -119,17 +119,15 @@ def add_tp_vidprj():
 
 
 def add_evt_vidprj():
-    # INFO : 비디오 프로젝터 이벤트 피드백
+    # NOTE : 비디오 프로젝터 이벤트 피드백
     for idx_vidprj, vidprj_instance in enumerate(vidprj_instance_list):
         vidprj_instance.add_event_handler(
-            "power", lambda idx_vidprj=idx_vidprj, **kwarg: refresh_vidprj_power_button(idx_vidprj)
+            "power", lambda idx_vidprj=idx_vidprj, **kwargs: refresh_vidprj_power_button(idx_vidprj)
         )
         vidprj_instance.add_event_handler(
-            "mute", lambda idx_vidprj=idx_vidprj, **kwarg: refresh_vidprj_mute_button(idx_vidprj)
+            "mute", lambda idx_vidprj=idx_vidprj, **kwargs: refresh_vidprj_mute_button(idx_vidprj)
         )
-    # ---------------------------------------------------------------------------- #
-    # INFO : TP 온라인 피드백
-    # ---------------------------------------------------------------------------- #
+    # NOTE : TP 온라인 피드백
     for idx_tp, dev_tp in enumerate(TP_LIST):
         for idx_tp in range(len(vidprj_instance_list)):
             dev_tp.online(lambda evt, idx_tp=idx_tp,: refresh_vidprj_power_button(idx_tp))

@@ -41,7 +41,6 @@ def get_relay_state(idx):
 TP_PORT_RELAY = 5
 
 
-# ---------------------------------------------------------------------------- #
 def add_tp_relay():
     for tp_instance in TP_LIST:
         for index in range(1, len(REL) + 1):

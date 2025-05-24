@@ -1,22 +1,7 @@
 from lib.lib_yeoul import get_device
 from lib.networkmanager import TcpClient
 
-# ---------------------------------------------------------------------------- #
-VIDMTX = TcpClient(name="vidmtx", ip="192.168.0.41", port=9990, buffer_size=2048)
-# VIDMTX = get_device("vidmtx")
-# ---------------------------------------------------------------------------- #
-# ---------------------------------------------------------------------------- #
-VIDPRJ_01 = TcpClient(name="vidprj_01", ip="192.168.0.51", port=4352)
-VIDPRJ_02 = TcpClient(name="vidprj_02", ip="192.168.0.52", port=4352)
-VIDPRJ_03 = TcpClient(name="vidprj_03", ip="192.168.0.53", port=4352)
-# VIDPRJ_01 = get_device("vidprj_01")
-# VIDPRJ_02 = get_device("vidprj_02")
-# VIDPRJ_03 = get_device("vidprj_03")
-VIDPRJ = (VIDPRJ_01, VIDPRJ_02, VIDPRJ_03)
-# ---------------------------------------------------------------------------- #
-VIDREC = TcpClient(name="vidrec", ip="192.168.0.43", port=9993)
-# VIDREC = get_device("vidrec")
-# ---------------------------------------------------------------------------- #
+BLU = get_device("SoundwebLondonBLU-100-1")
 NUM_CAM = 4
 CAM_IP = (
     "192.168.0.31",
@@ -24,11 +9,13 @@ CAM_IP = (
     "192.168.0.33",
     "192.168.0.34",
 )
-# ---------------------------------------------------------------------------- #
-BLU = get_device("SoundwebLondonBLU-100-1")
-# ---------------------------------------------------------------------------- #
+VIDMTX = TcpClient(name="vidmtx", ip="192.168.0.41", port=9990, buffer_size=2048)
+VIDPRJ_01 = TcpClient(name="vidprj_01", ip="192.168.0.51", port=4352)
+VIDPRJ_02 = TcpClient(name="vidprj_02", ip="192.168.0.52", port=4352)
+VIDPRJ_03 = TcpClient(name="vidprj_03", ip="192.168.0.53", port=4352)
+VIDPRJ = (VIDPRJ_01, VIDPRJ_02, VIDPRJ_03)
+VIDREC = TcpClient(name="vidrec", ip="192.168.0.43", port=9993)
 MUSE = get_device("idevice")
-# ---------------------------------------------------------------------------- #
 CE_REL_8_01 = get_device("CE-REL8-AC01E5")
 CE_REL_8_02 = get_device("CE-REL8-AC0201")
 REL_01 = MUSE.relay[0]
@@ -90,14 +77,14 @@ IR_05 = MUSE.ir[4]
 IR_06 = MUSE.ir[5]
 IR_07 = MUSE.ir[6]
 IR_08 = MUSE.ir[7]
-IR_09 = None  # get_device("hcontrol-irs48-1").ir[0]
-IR_10 = None  # get_device("hcontrol-irs48-1").ir[1]
-IR_11 = None  # get_device("hcontrol-irs48-1").ir[2]
-IR_12 = None  # get_device("hcontrol-irs48-1").ir[3]
-IR_13 = None  # get_device("hcontrol-irs4-2").ir[0]
-IR_14 = None  # get_device("hcontrol-irs4-2").ir[1]
-IR_15 = None  # get_device("hcontrol-irs4-2").ir[2]
-IR_16 = None  # get_device("hcontrol-irs4-2").ir[3]
+IR_09 = None
+IR_10 = None
+IR_11 = None
+IR_12 = None
+IR_13 = None
+IR_14 = None
+IR_15 = None
+IR_16 = None
 IR = (
     IR_01,
     IR_02,
@@ -126,15 +113,6 @@ def init_ir():
 
 
 # ---------------------------------------------------------------------------- #
-# SERIAL_01 = MUSE.serial[0]
-# SERIAL_02 = MUSE.serial[1]
-# SERIAL_03 = MUSE.serial[2]
-# SERIAL_04 = MUSE.serial[3]
-# SERIAL_05 = MUSE.serial[4]
-# SERIAL_06 = MUSE.serial[5]
-# SERIAL_07 = MUSE.serial[6]
-# SERIAL_08 = MUSE.serial[7]
-# ---------------------------------------------------------------------------- #
 TP_10001 = get_device("AMX-10001")
 TP_10002 = get_device("AMX-10002")
 TP_10003 = get_device("AMX-10003")
@@ -148,4 +126,3 @@ def init_tcp_client_connect():
     VIDPRJ_02.connect()
     VIDPRJ_03.connect()
     VIDREC.connect()
-    # VIDSWT.connect(IP_VIDSWT)
