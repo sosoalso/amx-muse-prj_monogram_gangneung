@@ -3,12 +3,7 @@ from lib.networkmanager import TcpClient
 
 BLU = get_device("SoundwebLondonBLU-100-1")
 NUM_CAM = 4
-CAM_IP = (
-    "192.168.0.31",
-    "192.168.0.32",
-    "192.168.0.33",
-    "192.168.0.34",
-)
+CAM_IP = ("192.168.0.31", "192.168.0.32", "192.168.0.33", "192.168.0.34")
 VIDMTX = TcpClient(name="vidmtx", ip="192.168.0.41", port=9990, buffer_size=2048)
 VIDPRJ_01 = TcpClient(name="vidprj_01", ip="192.168.0.51", port=4352)
 VIDPRJ_02 = TcpClient(name="vidprj_02", ip="192.168.0.52", port=4352)
@@ -125,4 +120,3 @@ def init_tcp_client_connect():
     VIDPRJ_01.connect()
     VIDPRJ_02.connect()
     VIDPRJ_03.connect()
-    VIDREC.connect()

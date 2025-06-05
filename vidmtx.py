@@ -1,4 +1,7 @@
+import json
 import re
+
+from mojo import context
 
 from config import TP_LIST, VIDMTX
 from lib.buttonhandler import ButtonHandler
@@ -9,7 +12,6 @@ from lib.lib_tp import (
     tp_set_button_text_unicode,
     tp_set_button_text_unicode_ss,
 )
-from mojo import context
 
 
 # ---------------------------------------------------------------------------- #
@@ -24,6 +26,25 @@ class Vidmtx(EventManager):
 
     def init(self):
         self.dv.receive.listen(self.parse_response)
+        self.load_json()
+
+    def load_json(self):
+        try:
+            with open("vidmtx_routes.json", "r", encoding="UTF-8") as f:
+                data = json.load(f)
+                for key, value in data.items():
+                    if hasattr(self.routes, key):
+                        setattr(self.routes, key, value)
+        except FileNotFoundError:
+            context.log.debug("vidmtx_routes.json 로드 에러 : 파일이 없습니다. 새로 생성합니다.")
+            self.save_json()
+
+    def save_json(self):
+        try:
+            with open("vidmtx_routes.json", "w", encoding="UTF-8") as f:
+                json.dump(self.routes, f, ensure_ascii=False, indent=4)
+        except Exception as e:
+            context.log.error(f"vidmtx_routes.json 저장 에러 : {e}")
 
     def parse_response(self, *args):
         try:
@@ -37,13 +58,11 @@ class Vidmtx(EventManager):
                         match = re.search(r"\d+ \d+", msg)
                         if match:
                             line = match.group(0)
-                            try:
-                                idx_out, idx_in = map(int, line.split())
-                                self.routes[idx_out + 1] = idx_in + 1
-                                self.trigger_event("route", idx_in=idx_in, idx_out=idx_out, this=self)
-                            except ValueError as e:
-                                context.log.error(f"{e}")
-        except (AttributeError, KeyError, UnicodeDecodeError) as e:
+                            idx_out, idx_in = map(int, line.split())
+                            self.routes[idx_out + 1] = idx_in + 1
+                            self.trigger_event("route", idx_in=idx_in, idx_out=idx_out, this=self)
+            self.save_json()
+        except (AttributeError, KeyError, UnicodeDecodeError, ValueError) as e:
             context.log.error(f"Error decoding data: {e}")
             return
 
@@ -71,44 +90,44 @@ NAME_VIDMTX_IN = (
     "카메라 2",
     "카메라 3",
     "카메라 4",
-    "입력 05",
-    "입력 06",
-    "입력 07",
-    "입력 08",
-    "입력 09",
-    "입력 10",
-    "입력 11",
-    "입력 12",
-    "입력 13",
-    "입력 14",
-    "입력 15",
-    "입력 16",
-    "입력 17",
-    "입력 18",
-    "입력 19",
-    "입력 20",
+    "05",
+    "06",
+    "07",
+    "08",
+    "09",
+    "10",
+    "11",
+    "12",
+    "13",
+    "14",
+    "15",
+    "16",
+    "17",
+    "18",
+    "19",  # "비디오 스위쳐\nPGM",
+    "레코더\n출력",
 )
 NAME_VIDMTX_OUT = (
-    "출력 01",
-    "출력 02",
-    "출력 03",
-    "출력 04",
-    "출력 05",
-    "출력 06",
-    "출력 07",
-    "출력 08",
-    "출력 09",
-    "출력 10",
-    "출력 11",
-    "출력 12",
-    "출력 13",
-    "출력 14",
-    "출력 15",
-    "출력 16",
-    "출력 17",
-    "출력 18",
-    "출력 19",
-    "출력 20",
+    "프로젝터\n1",
+    "프로젝터\n2",
+    "프로젝터\n3",
+    "04",
+    "조종실\n모니터 좌",
+    "조종실\n모니터 우",
+    "07",
+    "08",
+    "09",
+    "10",
+    "11",
+    "12",
+    "13",
+    "14",
+    "15",
+    "16",
+    "17",
+    "18",
+    "19",  # "비디오 스위쳐\n입력",
+    "레코더\n입력",
 )
 
 
@@ -191,7 +210,7 @@ def add_tp_vidmtx():
 
 def add_evt_vidmtx():
     # NOTE : 매트릭스 이벤트 피드백
-    def refresh_button_on_route_event(**kwargss):
+    def refresh_button_on_route_event(**kwargs):
         for idx_evt, _ in enumerate(TP_LIST):
             refresh_output_button(idx_evt)
             refresh_output_route_name(kwargs["idx_out"] + 1)

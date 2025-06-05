@@ -1,3 +1,5 @@
+from mojo import context
+
 from config import CAM_IP, NUM_CAM, TP_LIST
 from lib.buttonhandler import ButtonHandler
 from lib.lib_tp import (
@@ -7,7 +9,6 @@ from lib.lib_tp import (
     tp_show_popup,
 )
 from lib.simpleurlrequests import url_get
-from mojo import context
 
 
 # ---------------------------------------------------------------------------- #
@@ -108,10 +109,11 @@ def refresh_cam_prst_btn(idx_tp):
 
 
 def refresh_cam_speed_button():
-    if 1 <= var.sel_cam[idx_tp] <= NUM_CAM:
-        tp_set_button(TP_LIST[idx_tp], TP_PORT_CAM, 107, cam_instance_list[var.sel_cam[idx_tp] - 1].is_fast)
-    else:
-        tp_set_button(TP_LIST[idx_tp], TP_PORT_CAM, 107, False)
+    for idx_tp, _ in enumerate(TP_LIST):
+        if 1 <= var.sel_cam[idx_tp] <= NUM_CAM:
+            tp_set_button(TP_LIST[idx_tp], TP_PORT_CAM, 107, cam_instance_list[var.sel_cam[idx_tp] - 1].is_fast)
+        else:
+            tp_set_button(TP_LIST[idx_tp], TP_PORT_CAM, 107, False)
 
 
 def refresh_cam_all_button(*args):

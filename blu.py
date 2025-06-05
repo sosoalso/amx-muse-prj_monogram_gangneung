@@ -1,3 +1,5 @@
+from mojo import context
+
 from config import BLU, TP_LIST
 from lib.blucontroller import BluController
 from lib.buttonhandler import ButtonHandler
@@ -7,18 +9,17 @@ from lib.lib_tp import (
     tp_set_button_ss,
     tp_set_button_text_ss,
 )
-from mojo import context
 
 # ---------------------------------------------------------------------------- #
 BLU_PATH_GAIN = [
-    ("AMX MAIN SPEAKER GAIN", f"Channel {1}", "Gain"),
+    ("AMX MAIN SPEAKER GAIN", "Master"),
     ("AMX CEILLING GAIN", "Gain"),
     ("AMX OUTDOOR GAIN", "Gain"),
 ]
 BLU_PATH_MUTE = [
-    ("AMX MAIN SPEAKER GAIN", f"Channel {1}", "Mute"),
-    ("AMX OUTDOOR GAIN", "Mute"),
+    ("AMX MAIN SPEAKER GAIN", "Override Mute"),
     ("AMX CEILLING GAIN", "Mute"),
+    ("AMX OUTDOOR GAIN", "Mute"),
 ]
 # ---------------------------------------------------------------------------- #
 # SECTION : 제어 장비

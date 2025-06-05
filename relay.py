@@ -1,8 +1,9 @@
+from mojo import context
+
 from config import REL, TP_LIST
 from lib.buttonhandler import ButtonHandler
 from lib.lib_tp import tp_add_watcher
 from lib.lib_yeoul import pulse
-from mojo import context
 
 
 # ---------------------------------------------------------------------------- #

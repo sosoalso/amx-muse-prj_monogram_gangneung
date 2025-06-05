@@ -1,9 +1,10 @@
+from mojo import context
+
 from config import TP_LIST, VIDPRJ
 from lib.buttonhandler import ButtonHandler
 from lib.eventmanager import EventManager
 from lib.lib_tp import tp_add_watcher_ss, tp_set_button_ss
 from lib.scheduler import Scheduler
-from mojo import context
 
 
 # ---------------------------------------------------------------------------- #
