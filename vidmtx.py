@@ -1,9 +1,6 @@
 import json
 import re
 
-from mojo import context
-
-from config import TP_LIST, VIDMTX
 from lib.buttonhandler import ButtonHandler
 from lib.eventmanager import EventManager
 from lib.lib_tp import (
@@ -12,10 +9,13 @@ from lib.lib_tp import (
     tp_set_button_text_unicode,
     tp_set_button_text_unicode_ss,
 )
+from mojo import context
+
+from config import TP_LIST, VIDMTX
 
 
 # ---------------------------------------------------------------------------- #
-# SECTION : 제어 장비
+# SECTION - 제어 장비
 # ---------------------------------------------------------------------------- #
 class Vidmtx(EventManager):
     def __init__(self, dv):
@@ -67,20 +67,20 @@ class Vidmtx(EventManager):
             return
 
     def set_route(self, idx_in, idx_out):
-        self.dv.send(f"VIDEO OUTPUT ROUTING:\n{idx_out} {idx_in}\n\n")
+        self.dv.send(f"VIDEO OUTPUT ROUTING:\n{idx_out} {idx_in}\n\n".encode())
         self.routes[idx_out + 1] = idx_in + 1
         self.trigger_event("route", idx_in=idx_in, idx_out=idx_out, routes=self.routes, this=self)
 
     def set_routes(self, route_dict):
         route_str = "\n".join(f"{idx_in} {idx_out}" for idx_in, idx_out in route_dict.items())
-        self.dv.send(f"VIDEO OUTPUT ROUTING:\n{route_str}\n")
+        self.dv.send(f"VIDEO OUTPUT ROUTING:\n{route_str}\n".encode())
         for idx_in, idx_out in route_dict.items():
             self.trigger_event("route", idx_in=idx_in, idx_out=idx_out, routes=self.routes, this=self)
 
 
-vidmtx_instance = Vidmtx(VIDMTX)  # INFO : 제어 장비 인스턴스
+vidmtx_instance = Vidmtx(VIDMTX)  # INFO - 제어 장비 인스턴스
 # ---------------------------------------------------------------------------- #
-# SECTION : TP
+# SECTION - TP
 # ---------------------------------------------------------------------------- #
 TP_PORT_VIDMTX = 3
 NUM_VIDMTX_IN = 20

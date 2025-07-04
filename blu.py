@@ -22,9 +22,9 @@ BLU_PATH_MUTE = [
     ("AMX OUTDOOR GAIN", "Mute"),
 ]
 # ---------------------------------------------------------------------------- #
-# SECTION : 제어 장비
+# SECTION - 제어 장비
 # ---------------------------------------------------------------------------- #
-blu_controller = BluController(BLU)  # INFO : 제어 장비 인스턴스
+blu_controller = BluController(BLU)  # INFO - 제어 장비 인스턴스
 
 
 def handle_blu_controller_online():
@@ -33,7 +33,7 @@ def handle_blu_controller_online():
 
 BLU.online(lambda evt: handle_blu_controller_online())
 # ---------------------------------------------------------------------------- #
-# SECTION : TP
+# SECTION - TP
 # ---------------------------------------------------------------------------- #
 TP_PORT_BLU = 2
 

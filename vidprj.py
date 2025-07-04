@@ -1,14 +1,14 @@
-from mojo import context
-
-from config import TP_LIST, VIDPRJ
 from lib.buttonhandler import ButtonHandler
 from lib.eventmanager import EventManager
 from lib.lib_tp import tp_add_watcher_ss, tp_set_button_ss
 from lib.scheduler import Scheduler
+from mojo import context
+
+from config import TP_LIST, VIDPRJ
 
 
 # ---------------------------------------------------------------------------- #
-# SECTION : 제어 장비
+# SECTION - 제어 장비
 # ---------------------------------------------------------------------------- #
 class EpsonVidprj(EventManager):
     def __init__(self, dv, name="EpsonVidprj"):
@@ -29,10 +29,10 @@ class EpsonVidprj(EventManager):
 
     def start_poll(self, *args):
         def query_power():
-            self.dv.send("%1POWR ?\r")
+            self.dv.send("%1POWR ?\r".encode())
 
         def query_mute():
-            self.dv.send("%1AVMT ?\r")
+            self.dv.send("%1AVMT ?\r".encode())
 
         self.poll.set_timeout(lambda: self.poll.set_interval(query_power, 10.0), 1.0)
         self.poll.set_timeout(lambda: self.poll.set_interval(query_mute, 10.0), 2.0)
@@ -62,7 +62,7 @@ class EpsonVidprj(EventManager):
                 context.log.error(f"EpsonVidprj {self.name=} Error decoding data: {e}")
 
     def set_power(self, value):
-        self.dv.send("%1POWR 1\r" if value else "%1POWR 0\r")
+        self.dv.send("%1POWR 1\r".encode() if value else "%1POWR 0\r".encode())
         self.power = value
         self.trigger_event("power", value=value, this=self)
 
@@ -73,7 +73,7 @@ class EpsonVidprj(EventManager):
         self.set_power(False)
 
     def set_mute(self, value):
-        self.dv.send("%1AVMT 31\r" if value else "%1AVMT 30\r")
+        self.dv.send("%1AVMT 31\r".encode() if value else "%1AVMT 30\r".encode())
         self.mute = value
         self.trigger_event("mute", value=value, this=self)
 
@@ -86,7 +86,7 @@ class EpsonVidprj(EventManager):
 
 vidprj_instance_list = tuple(EpsonVidprj(d, name=f"vidprj_0{i}") for i, d in enumerate(VIDPRJ))
 # ---------------------------------------------------------------------------- #
-# SECTION : TP
+# SECTION - TP
 # ---------------------------------------------------------------------------- #
 TP_PORT_VIDPRJ = 4
 

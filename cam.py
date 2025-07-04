@@ -12,16 +12,13 @@ from lib.simpleurlrequests import url_get
 
 
 # ---------------------------------------------------------------------------- #
-# SECTION : 제어 장비
+# SECTION - 제어 장비
 # ---------------------------------------------------------------------------- #
 class CanonCam:
     def __init__(self, ip_address):
         self.ip_address = ip_address
         self.is_fast = False
         self.last_recall_preset = 0
-
-    def logger(self, result):
-        print(result)
 
     def toggle_speed(self):
         self.is_fast = not self.is_fast
@@ -79,9 +76,9 @@ class CanonCam:
         url_get(f"http://{self.ip_address}/-wvhttp-01-/preset/set?p={preset_no}&all=enabled")
 
 
-cam_instance_list = [CanonCam(ip) for ip in CAM_IP]  # INFO : 제어 장비 인스턴스
+cam_instance_list = [CanonCam(ip) for ip in CAM_IP]  # INFO - 제어 장비 인스턴스
 # ---------------------------------------------------------------------------- #
-# SECTION : TP
+# SECTION - TP
 # ---------------------------------------------------------------------------- #
 TP_PORT_CAM = 6
 

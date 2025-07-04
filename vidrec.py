@@ -7,7 +7,7 @@ from lib.lib_tp import tp_add_watcher_ss, tp_set_button_ss
 
 
 # ---------------------------------------------------------------------------- #
-# SECTION : 제어 장비
+# SECTION - 제어 장비
 # ---------------------------------------------------------------------------- #
 class Vidrec(EventManager):
     def __init__(self, dv):
@@ -75,7 +75,7 @@ class Vidrec(EventManager):
 
 vidrec_instance = Vidrec(VIDREC)
 # ---------------------------------------------------------------------------- #
-# SECTION : TP
+# SECTION - TP
 # ---------------------------------------------------------------------------- #
 TP_PORT_VIDREC = 7
 
